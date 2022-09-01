@@ -16,23 +16,26 @@ class EPICMEGAJAM2022_API ARougelikeGameMode : public AEpicMegajam2022GameModeBa
  
 public:
  
-	UPROPERTY(EditAnywhere)
-	int32 MinEnemiesCount = 5;
-
-	UPROPERTY(EditAnywhere)
-	int32 MaxEnemiesCount = 10;
-
-	UPROPERTY(EditAnywhere)
-	int32 MinUnderwaterEnemiesCount = 5;
-
-	UPROPERTY(EditAnywhere)
-	int32 MaxUnderwaterEnemiesCount = 10;
+	// UPROPERTY(EditAnywhere)
+	// int32 MinEnemiesCount = 5;
+	//
+	// UPROPERTY(EditAnywhere)
+	// int32 MaxEnemiesCount = 10;
+	//
+	// UPROPERTY(EditAnywhere)
+	// int32 MinUnderwaterEnemiesCount = 5;
+	//
+	// UPROPERTY(EditAnywhere)
+	// int32 MaxUnderwaterEnemiesCount = 10;
 
 	UPROPERTY(EditAnywhere)
 	int32 MinWeatherEnemiesCount = 5;
 
 	UPROPERTY(EditAnywhere)
 	int32 MaxWeatherEnemiesCount = 10;
+
+	UPROPERTY(EditAnywhere)
+	int32 SpawnRadius = 15000;
 	
 	UPROPERTY(EditAnywhere)
 	TArray<APawn*> EnemiesTypes;
@@ -51,6 +54,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	int32 GetEnemiesCount() const { return TotalEnemiesCount; }
+
+	UFUNCTION(BlueprintCallable)
+	int32 GetSpawnRadius() const { return SpawnRadius; }
 
 protected:
     UPROPERTY(BlueprintAssignable)

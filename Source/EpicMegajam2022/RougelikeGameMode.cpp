@@ -13,17 +13,17 @@ void ARougelikeGameMode::InitializeMap()
 void ARougelikeGameMode::CreateEnemies()
 {
 	int32 WeatherEnemiesCount = FMath::RandRange(MinWeatherEnemiesCount * DifficultyLevel, MaxWeatherEnemiesCount * DifficultyLevel);
-	SurfaceEnemiesCount = FMath::RandRange(MinEnemiesCount * DifficultyLevel, MaxEnemiesCount * DifficultyLevel);
-	UnderwaterEnemiesCount = FMath::RandRange(MinUnderwaterEnemiesCount * DifficultyLevel, MaxUnderwaterEnemiesCount * DifficultyLevel);
-	TotalEnemiesCount = SurfaceEnemiesCount + UnderwaterEnemiesCount;
-	for (int32 i=0; i<SurfaceEnemiesCount; i++)
-	{
-		OnSpawnEnemy.Broadcast();
-	}
-	for (int32 i=0; i<UnderwaterEnemiesCount; i++)
-	{
-		FOnSpawnUnderwaterEnemy.Broadcast();
-	}
+	// SurfaceEnemiesCount = FMath::RandRange(MinEnemiesCount * DifficultyLevel, MaxEnemiesCount * DifficultyLevel);
+	// UnderwaterEnemiesCount = FMath::RandRange(MinUnderwaterEnemiesCount * DifficultyLevel, MaxUnderwaterEnemiesCount * DifficultyLevel);
+	// TotalEnemiesCount = SurfaceEnemiesCount + UnderwaterEnemiesCount;
+	// for (int32 i=0; i<SurfaceEnemiesCount; i++)
+	// {
+	// 	OnSpawnEnemy.Broadcast();
+	// }
+	// for (int32 i=0; i<UnderwaterEnemiesCount; i++)
+	// {
+	// 	FOnSpawnUnderwaterEnemy.Broadcast();
+	// }
 	for (int32 i=0; i<WeatherEnemiesCount; i++)
 	{
 		FOnSpawnWeatherEnemy.Broadcast();
