@@ -1,58 +1,45 @@
 ﻿#include "RougelikeGameMode.h"
-#include "GameplayTags.h"
-
-ARougelikeGameMode::ARougelikeGameMode()
-{
-	EnemiesAlive = TArray<FGameplayTag>();
-	EnemiesKilled = TArray<FGameplayTag>();
-}
 
 void ARougelikeGameMode::InitializeMap()
 {
 	DifficultyLevel++;
-	if (DifficultyLevel > LevelCyclesCount)
-	{
-		return;
-	}
+	// if (DifficultyLevel > LevelCyclesCount)
+	// {
+	// 	return;
+	// }
 	CreateEnemies();
 }
 
 void ARougelikeGameMode::CreateEnemies()
 {
-	EnemiesAlive.Reset();
-	EnemiesKilled.Reset();
-	EnemiesCount = FMath::RandRange(MinEnemiesCount * DifficultyLevel, MaxEnemiesCount * DifficultyLevel);
-	if (EnemiesCount > MaxPossibleEnemiesCount)
+	int32 WeatherEnemiesCount = FMath::RandRange(MinWeatherEnemiesCount * DifficultyLevel, MaxWeatherEnemiesCount * DifficultyLevel);
+	SurfaceEnemiesCount = FMath::RandRange(MinEnemiesCount * DifficultyLevel, MaxEnemiesCount * DifficultyLevel);
+	UnderwaterEnemiesCount = FMath::RandRange(MinUnderwaterEnemiesCount * DifficultyLevel, MaxUnderwaterEnemiesCount * DifficultyLevel);
+	TotalEnemiesCount = SurfaceEnemiesCount + UnderwaterEnemiesCount;
+	for (int32 i=0; i<SurfaceEnemiesCount; i++)
 	{
-		EnemiesCount = MaxPossibleEnemiesCount;
+		OnSpawnEnemy.Broadcast();
 	}
-	for (int32 i=0; i<EnemiesCount; i++)
+	for (int32 i=0; i<UnderwaterEnemiesCount; i++)
 	{
-		FString TagName = "Enemy_" + FString::FromInt(i);
-		FGameplayTag EnemyTag = FGameplayTag::RequestGameplayTag(FName(*TagName));
-		EnemiesAlive.Add(EnemyTag);
-		OnSpawnEnemy.Broadcast(EnemyTag);
-		UE_LOG(LogTemp, Error, TEXT("Spawn enemy c++"));
+		FOnSpawnUnderwaterEnemy.Broadcast();
+	}
+	for (int32 i=0; i<WeatherEnemiesCount; i++)
+	{
+		FOnSpawnWeatherEnemy.Broadcast();
 	}
 }
 
-void ARougelikeGameMode::UpdateEnemiesStat(FGameplayTag KilledEnemy)
+void ARougelikeGameMode::UpdateEnemiesStat()
 {
-	if (EnemiesAlive.Contains(KilledEnemy))
+	TotalEnemiesCount--;
+	OnUpdateEnemiesCount.Broadcast(TotalEnemiesCount);
+	if (TotalEnemiesCount == 0)
 	{
-		EnemiesAlive.Remove(KilledEnemy);
-		EnemiesKilled.Add(KilledEnemy);
-		EnemiesCount--;
-		OnUpdateEnemiesCount.Broadcast(EnemiesCount);
-		UE_LOG(LogTemp, Error, TEXT("Enemies Alive: %s"), *FString::FromInt(EnemiesAlive.Num()));
-		UE_LOG(LogTemp, Error, TEXT("Enemies Killed: %s"), *FString::FromInt(EnemiesKilled.Num()));
-		if (EnemiesAlive.IsEmpty())
-		{
-			//TODO end the game or spawn Boss
-			FinishLevel();
-		}
-		//TODO event on UI
+		//TODO end the game or spawn Boss
+		FinishLevel();
 	}
+	//TODO event on UI
 }
 
 void ARougelikeGameMode::FinishLevel()
