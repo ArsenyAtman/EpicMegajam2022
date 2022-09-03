@@ -1,4 +1,4 @@
-# EpicMegajam2022v2
+# Epic Megajam 2022
 
 A game for the gamejam. It was created by a team of 5 (2 artists and 3 coders, incl. me).
 itch.io page: https://arsenyatman.itch.io/flying-dutchmans-battle
